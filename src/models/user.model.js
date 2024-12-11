@@ -9,7 +9,7 @@ const userSchema = new Schema(
       required: true,
       unique: true,
       lowercase: true,
-      trim: trim, // Ensures no leading/trailing whitespace
+      trim: true, // Ensures no leading/trailing whitespace
       index: true, // Creates an index for faster queries on the `username` field
     },
     email: {
@@ -17,12 +17,12 @@ const userSchema = new Schema(
       required: true,
       unique: true,
       lowercase: true,
-      trim: trim,
+      trim: true,
     },
     fullName: {
       type: String,
       required: true,
-      trim: trim,
+      trim: true,
       index: true,
     },
     avatar: {
@@ -52,7 +52,7 @@ const userSchema = new Schema(
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
 
-  this.password = bcrypt.hash(this.password, 10);
+  this.password = await bcrypt.hash(this.password, 10);
   next();
 });
 
